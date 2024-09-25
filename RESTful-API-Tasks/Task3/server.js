@@ -13,7 +13,7 @@ const __dirname = dirname(__filename)
 const app = express()
 const port = 3000
 
-const API_KEY = '943fe0860bf18340377e6da52cc280c7'
+const API_KEY = process.env.API_KEY;
 
 app.use(cors())
 app.use(express.static('public'))
@@ -32,8 +32,8 @@ app.post('/weather', async (req, res) => {
    
 
     const response = await axios.get(
-      `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=943fe0860bf18340377e6da52cc280c7&units=metric`
-    ) //http://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
+      `https://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${API_KEY}&units=metric`
+    )  //http://api.openweathermap.org/data/3.0/onecall?lat=${lat}&lon=${lon}&appid=${API_KEY}`);
     res.json(response.data)
   } catch (error) {
     res.status(500).json({ error: 'Error fetching weather data' })
