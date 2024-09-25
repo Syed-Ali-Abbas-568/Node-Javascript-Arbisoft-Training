@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Weather Chart</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js"></script>
+</head>
+<body>
+    <canvas id="weatherChart" height="200"></canvas>
+
+    <script src="response.js"></script>
+    <script>
+        var ctx = document.getElementById("weatherChart");
+
+        // Extracting data for visualization
+        var hourlyTemps = [];
+        var hourlyLabels = [];
+
+        // Using the data from response.js
+        if (typeof responseData !== 'undefined') {
+            responseData.hourly.forEach(function(hourData) {
+                hourlyTemps.push(hourData.temp);
+                var date = new Date(hourData.dt * 1000);
+                var hours = date.getHours();
+                hourlyLabels.push(hours + ":00");
+            });
+
+            var weatherChart = new Chart(ctx, {
+                type: "line",
+                data: {
+                    labels: hourlyLabels,
+                    datasets: [{
+                        label: 'Hourly Temperature (°C)',
+                        data: hourlyTemps,
+                        backgroundColor: "rgba(54, 162, 235, 0.6)",
+                        borderColor: "rgba(54, 162, 235, 1)",
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        yAxes: [{
+                            ticks: {
+                                beginAtZero: true
+                            }
+                        }]
+                    },
+                    title: {
+                        display: true,
+                        text: 'Hourly Temperature Forecast'
+                    },
+                    legend: {
+                        display: false
+                    }
+                }
+            });
+        } else {
+            console.error('Response data not found. Make sure response.js is loaded correctly.');
+        }
+    </script>
+</body>
+</html>
